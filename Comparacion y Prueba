@@ -1,0 +1,63 @@
+Materia: Lenguajes de Interfaz
+Alumno: José Mario Carrasco Larios
+Docente: José Luis Medina Jiménez
+practica3: comparacion y prueba
+¿Qué hace el código?: Demuestra el uso de la instrucción CMP para comparar dos valores numéricos (25 y 40) y la instrucción TEST para verificar mediante una máscara de bits si un número es par o impar sin alterar el operando destino.
+
+
+
+INCLUDE Irvine32.inc
+
+.data
+    valA      DWORD 25
+    valB      DWORD 40
+    msgCmp    BYTE "Resultado de CMP (25 vs 40): ", 0
+    msgMenor  BYTE "El primer valor es menor que el segundo.", 0
+    msgMayor  BYTE "El primer valor es mayor o igual al segundo.", 0
+    msgTest   BYTE "Resultado de TEST (25 AND 1): ", 0
+    msgImpar  BYTE "El numero 25 es impar (Bit 0 encendido).", 0
+    msgPar    BYTE "El numero 25 es par (Bit 0 apagado).", 0
+
+.code
+main PROC
+    call Clrscr
+
+    mov edx, OFFSET msgCmp
+    call WriteString
+
+    mov eax, valA
+    cmp eax, valB
+    jl EsMenor
+
+    mov edx, OFFSET msgMayor
+    call WriteString
+    call Crlf
+    jmp PruebaBit
+
+EsMenor:
+    mov edx, OFFSET msgMenor
+    call WriteString
+    call Crlf
+
+PruebaBit:
+    mov edx, OFFSET msgTest
+    call WriteString
+
+    mov eax, valA
+    test eax, 1
+    jnz EsImpar
+
+    mov edx, OFFSET msgPar
+    call WriteString
+    call Crlf
+    jmp Fin
+
+EsImpar:
+    mov edx, OFFSET msgImpar
+    call WriteString
+    call Crlf
+
+Fin:
+    exit
+main ENDP
+END main
